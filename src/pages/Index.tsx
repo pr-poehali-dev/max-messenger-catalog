@@ -2,12 +2,10 @@ import { useState } from "react";
 import CatalogPage from "@/components/pages/CatalogPage";
 import CartPage from "@/components/pages/CartPage";
 import OrdersPage from "@/components/pages/OrdersPage";
-import HistoryPage from "@/components/pages/HistoryPage";
 import AdminPage from "@/components/pages/AdminPage";
-import ProfilePage from "@/components/pages/ProfilePage";
 import Navbar from "@/components/Navbar";
 
-export type Page = "catalog" | "cart" | "orders" | "history" | "admin" | "profile";
+export type Page = "catalog" | "cart" | "orders" | "admin";
 
 export interface CartItem {
   id: number;
@@ -119,7 +117,6 @@ const Index = () => {
           <CartPage cart={cart} removeFromCart={removeFromCart} updateQuantity={updateQuantity} setActivePage={setActivePage} />
         )}
         {activePage === "orders" && <OrdersPage />}
-        {activePage === "history" && <HistoryPage />}
         {activePage === "admin" && !adminAuth && (
           <div className="max-w-sm mx-auto px-6 py-24">
             <div className="text-center mb-8">
@@ -163,7 +160,7 @@ const Index = () => {
             onLogout={() => { setAdminAuth(false); setActivePage("catalog"); }}
           />
         )}
-        {activePage === "profile" && <ProfilePage setActivePage={setActivePage} />}
+
       </main>
     </div>
   );

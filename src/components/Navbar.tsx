@@ -11,9 +11,7 @@ const navItems: { id: Page; label: string; icon: string }[] = [
   { id: "catalog", label: "Каталог", icon: "Grid3X3" },
   { id: "cart", label: "Корзина", icon: "ShoppingCart" },
   { id: "orders", label: "Заказы", icon: "Package" },
-  { id: "history", label: "История", icon: "Clock" },
   { id: "admin", label: "Админ", icon: "Settings" },
-  { id: "profile", label: "Профиль", icon: "User" },
 ];
 
 const Navbar = ({ activePage, setActivePage, cartCount }: NavbarProps) => {
