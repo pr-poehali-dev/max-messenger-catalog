@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { CartItem, Page } from "@/pages/Index";
 import Icon from "@/components/ui/icon";
 
@@ -10,6 +11,7 @@ interface CartPageProps {
 
 const CartPage = ({ cart, removeFromCart, updateQuantity, setActivePage }: CartPageProps) => {
   const total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const [comment, setComment] = useState("");
 
   const handleQtyInput = (id: number, val: string) => {
     const num = parseInt(val, 10);
@@ -103,11 +105,24 @@ const CartPage = ({ cart, removeFromCart, updateQuantity, setActivePage }: CartP
                 </div>
               ))}
             </div>
-            <div className="border-t border-gray-100 pt-4 mb-6">
+            <div className="border-t border-gray-100 pt-4 mb-4">
               <div className="flex justify-between font-semibold text-black">
                 <span>Сумма</span>
                 <span>{total.toLocaleString("ru")} ₽</span>
               </div>
+            </div>
+            <div className="mb-4">
+              <label className="text-xs text-gray-500 mb-1.5 flex items-center gap-1.5 block">
+                <Icon name="MessageSquare" size={12} />
+                Комментарий к заказу
+              </label>
+              <textarea
+                value={comment}
+                onChange={e => setComment(e.target.value)}
+                placeholder="Пожелания по доставке, время, этаж..."
+                rows={3}
+                className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-black transition-colors resize-none placeholder:text-gray-300"
+              />
             </div>
             <button className="w-full bg-black text-white py-3.5 rounded-xl font-medium hover:bg-gray-800 transition-colors">
               Оформить заказ
