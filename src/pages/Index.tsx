@@ -79,15 +79,9 @@ const Index = () => {
     setCart(prev => prev.map(i => i.id === id ? { ...i, quantity } : i));
   };
 
-  const cartCount = cart.reduce((sum, i) => sum + i.quantity, 0);
+  const clearCart = () => setCart([]);
 
-  const handleAdminNav = () => {
-    if (adminAuth) {
-      setActivePage("admin");
-    } else {
-      setActivePage("admin");
-    }
-  };
+  const cartCount = cart.reduce((sum, i) => sum + i.quantity, 0);
 
   const handleAdminLogin = () => {
     if (adminPwInput === ADMIN_PASSWORD) {
@@ -111,10 +105,11 @@ const Index = () => {
             cart={cart}
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
+            setActivePage={setActivePage}
           />
         )}
         {activePage === "cart" && (
-          <CartPage cart={cart} removeFromCart={removeFromCart} updateQuantity={updateQuantity} setActivePage={setActivePage} />
+          <CartPage cart={cart} removeFromCart={removeFromCart} updateQuantity={updateQuantity} clearCart={clearCart} setActivePage={setActivePage} />
         )}
         {activePage === "orders" && <OrdersPage />}
         {activePage === "admin" && !adminAuth && (
