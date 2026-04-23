@@ -99,6 +99,11 @@
     @apply bg-background text-foreground;
     font-family: "Golos Text", sans-serif;
     -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+
+  .safe-area-pb {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   :root {
