@@ -97,5 +97,11 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: "Golos Text", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :root {
+    --radius: 0.75rem;
   }
 }
