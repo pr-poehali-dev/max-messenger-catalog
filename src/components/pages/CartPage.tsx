@@ -11,6 +11,12 @@ interface CartPageProps {
 const CartPage = ({ cart, removeFromCart, updateQuantity, setActivePage }: CartPageProps) => {
   const total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
+  const handleQtyInput = (id: number, val: string) => {
+    const num = parseInt(val, 10);
+    if (isNaN(num)) return;
+    updateQuantity(id, num);
+  };
+
   if (cart.length === 0) {
     return (
       <div className="max-w-6xl mx-auto px-6 py-8">
@@ -34,39 +40,56 @@ const CartPage = ({ cart, removeFromCart, updateQuantity, setActivePage }: CartP
       <h1 className="text-3xl font-semibold text-black mb-8">Корзина</h1>
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="flex-1 space-y-3">
-          {cart.map(item => (
-            <div key={item.id} className="flex items-center gap-4 p-5 border border-gray-100 rounded-2xl hover:border-gray-200 transition-colors">
-              <div className="text-3xl w-12 text-center">{item.image}</div>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-medium text-black text-sm truncate">{item.name}</h3>
-                <p className="text-gray-400 text-xs mt-0.5">{item.price.toLocaleString("ru")} ₽ / шт</p>
-              </div>
-              <div className="flex items-center gap-2">
+          {cart.map(item => {
+            const isEmoji = item.image && item.image.length <= 4;
+            return (
+              <div key={item.id} className="flex items-center gap-4 p-5 border border-gray-100 rounded-2xl hover:border-gray-200 transition-colors">
+                <div className="w-12 text-center flex-shrink-0">
+                  {isEmoji ? (
+                    <span className="text-3xl">{item.image}</span>
+                  ) : (
+                    <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-xl" />
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-black text-sm truncate">{item.name}</h3>
+                  <p className="text-gray-400 text-xs mt-0.5">{item.price.toLocaleString("ru")} ₽ / шт</p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                    className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center hover:border-black transition-colors flex-shrink-0"
+                  >
+                    <Icon name="Minus" size={12} />
+                  </button>
+                  <input
+                    type="number"
+                    min={1}
+                    value={item.quantity}
+                    onChange={e => handleQtyInput(item.id, e.target.value)}
+                    className="w-12 text-center text-sm font-medium border border-gray-200 rounded-lg py-1 focus:outline-none focus:border-black transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  />
+                  <button
+                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center hover:border-black transition-colors flex-shrink-0"
+                  >
+                    <Icon name="Plus" size={12} />
+                  </button>
+                </div>
+
+                <div className="text-right min-w-[80px]">
+                  <p className="font-semibold text-black text-sm">{(item.price * item.quantity).toLocaleString("ru")} ₽</p>
+                </div>
                 <button
-                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                  className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center hover:border-black transition-colors"
+                  onClick={() => removeFromCart(item.id)}
+                  className="text-gray-300 hover:text-red-400 transition-colors flex-shrink-0"
                 >
-                  <Icon name="Minus" size={12} />
-                </button>
-                <span className="w-8 text-center text-sm font-medium">{item.quantity}</span>
-                <button
-                  onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                  className="w-8 h-8 rounded-lg border border-gray-200 flex items-center justify-center hover:border-black transition-colors"
-                >
-                  <Icon name="Plus" size={12} />
+                  <Icon name="X" size={16} />
                 </button>
               </div>
-              <div className="text-right min-w-[80px]">
-                <p className="font-semibold text-black text-sm">{(item.price * item.quantity).toLocaleString("ru")} ₽</p>
-              </div>
-              <button
-                onClick={() => removeFromCart(item.id)}
-                className="text-gray-300 hover:text-red-400 transition-colors"
-              >
-                <Icon name="X" size={16} />
-              </button>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="lg:w-80">
